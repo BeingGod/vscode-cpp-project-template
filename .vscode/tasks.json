@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "android lldb setup",
+            "command": [
+                "sh ${workspaceFolder}/build/android_lldb_start.sh",
+            ],
+            "isBackground": true,
+            "promptOnClose": true,
+            "problemMatcher": {
+                "pattern": [{
+                    "regexp": ".",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "message": 4
+                }],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": { "regexp": "pushed" },
+                    "endsPattern": { "regexp": "start|lost|exiting|established" }
+                },
+            },
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // https://lldb.llvm.org/use/remote.html
+            // https://code.visualstudio.com/docs/editor/debugging
+            // https://github.com/vadimcn/vscode-lldb/blob/master/MANUAL.md
+            "type": "lldb",
+            "request": "launch",
+            "name": "android lldb launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "preLaunchTask": "android lldb setup",
+            "initCommands": [
+                "platform select remote-android",
+                "platform connect unix-abstract-connect:///data/local/tmp/<project>/<project>.debug.sock",
+            ],
+            "preRunCommands": [
+                // 加载目标程序前push资源文件
+                "sh ${workspaceFolder}/build/run_android.sh"
+            ],
+            // 加载目标程序后, 执行目标程序前
+            // "postRunCommands": [ ],
+            "exitCommands": [
+                // 退出后
+                "sh rm -rf ${workspaceFolder}/build/result",
+                "sh adb pull /data/local/tmp/<project>/result ${workspaceFolder}/build/",
+                // "sh open ${workspaceFolder}/build/result"
+            ],
+            // "postDebugTask": "",
+            "internalConsoleOptions": "openOnSessionStart",
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "lldb launch",
+            "program": "${command:cmake.launchTargetPath}"
+        }
+    ]
+}
