@@ -7,6 +7,9 @@ if [[ -z $project_name ]]; then
   exit 1
 fi
 
+author=$(git config user.name)
+email=$(git config user.email)
+
 echo "Init $project_name project..."
 
 current_dir=$(cd `dirname $0`; pwd)
@@ -17,10 +20,10 @@ mkdir -p $project_dir/build
 
 cp $current_dir/../CMakePresets.json $project_dir
 cp $current_dir/../.vscode/extensions.json $project_dir/.vscode
-cp $current_dir/../.vscode/settings.json $project_dir/.vscode
 cp $current_dir/../.vscode/tasks.json $project_dir/.vscode
 cp $current_dir/../.clang-format $project_dir
 
+echo "$(cat $current_dir/../.vscode/settings.json | sed "s/<author>/${author}/g" | sed "s/<email>/${email}/g")" >  $project_dir/.vscode/settings.json
 echo "$(cat $current_dir/../.vscode/launch.json | sed "s/<project>/${project_name}/g")" >  $project_dir/.vscode/launch.json
 echo "$(cat $current_dir/android_lldb_start.sh | sed "s/<project>/${project_name}/g")" >  $project_dir/build/android_lldb_start.sh
 
